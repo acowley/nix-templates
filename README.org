@@ -1,0 +1,21 @@
+#+TITLE: Nix Flake Templates
+* Haskell
+This [[https://nixos.wiki/wiki/Flakes][flake]] sets up a development environment for working on a Haskell package. It also includes a helper to initialize a [[https://www.haskell.org/cabal/][Cabal]] package using the same [[https://www.haskell.org/ghc/][GHC]] and =cabal-install= you will be using to develop your package.
+
+Before you initialize your Cabal package, change the name in the =flake.nix= provided by this template. It is bound to the identifier ~pkg-name~ in the =flake.nix= file, and can be set using the example =sed= command below, or with your favorite text editor.
+
+#+begin_src bash
+nix flake init -t github.com:acowley/nix-templates#haskell-hello
+nix run nixpkgs#gnused 's/"my-package"/"real-package-name"/' -i flake.nix
+nix run .#init
+#+end_src
+
+Now you can enter the development environment with =nix develop=, or, if you use [[https://github.com/nix-community/nix-direnv][nix-direnv]] (recommended),
+
+#+begin_src bash
+echo 'use flake' > .envrc && direnv allow
+#+end_src
+
+When you add dependencies to your =.cabal= file, a quick =direnv reload= will update your environment. You may want to restart your LSP workspace when adding dependencies if you use the [[https://github.com/haskell/haskell-language-server][haskell-language-server]] LSP server that is included in this environment.
+
+If you are an emacs user, I heartily recommend [[https://github.com/wbolster/emacs-direnv][emacs-direnv]] to tie all this together.
