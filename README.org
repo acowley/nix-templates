@@ -5,7 +5,7 @@ This [[https://nixos.wiki/wiki/Flakes][flake]] sets up a development environment
 Before you initialize your Cabal package, change the name in the =flake.nix= provided by this template. It is bound to the identifier ~pkg-name~ in the =flake.nix= file, and can be set using the example =sed= command below, or with your favorite text editor.
 
 #+begin_src bash
-nix flake init -t github.com:acowley/nix-templates#haskell-hello
+nix flake init -t github:acowley/nix-templates#haskell-hello
 nix run nixpkgs#gnused 's/"my-package"/"real-package-name"/' -i flake.nix
 nix run .#init
 #+end_src
