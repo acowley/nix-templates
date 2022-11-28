@@ -19,3 +19,36 @@ echo 'use flake' > .envrc && direnv allow
 When you add dependencies to your =.cabal= file, a quick =direnv reload= will update your environment. You may want to restart your LSP workspace when adding dependencies if you use the [[https://github.com/haskell/haskell-language-server][haskell-language-server]] LSP server that is included in this environment.
 
 If you are an emacs user, I heartily recommend [[https://github.com/wbolster/emacs-direnv][emacs-direnv]] to tie all this together.
+** Depending on another flake
+If you build a library package in one flake, and wish to depend upon it in another, you can reference the upstream flake in the =flake.nix= created by this template. We list it as an input, mention it among the arguments to ~outputs~, then incorporate it into the ~haskell-overlay~ definition.
+
+#+begin_src nix
+{
+  description = "A Haskell package";
+  inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-22.05-darwin";
+    my-lib.url = "/Users/acowley/temp/nix-haskell/my-lib";
+  };
+
+  outputs = { self, nixpkgs, flake-utils, my-lib }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let pkg-name = "my-test-app";
+          pkgs = import nixpkgs {
+            inherit system;
+          };
+          haskell = pkgs.haskellPackages; template...
+          haskell-overlay = final: prev: {
+            ${pkg-name} = hspkgs.callCabal2nix pkg-name ./. {};
+          } // my-lib.haskell-overlay.${system} final prev;
+          hspkgs = haskell.override {
+            overrides = haskell-overlay;
+          };
+      in {
+        # Contents unchanged from the template
+      }
+    );
+}
+#+end_src
+
+Now you can see the package provided by =my-lib=  in the output of =ghc-pkg list=, and depend on the package defined in the =my-lib= flake in your =.cabal= file.
