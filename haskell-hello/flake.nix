@@ -36,6 +36,7 @@
             cabal init -p ${pkg-name}
           '';
         };
+        inherit haskell-overlay;
         defaultPackage = hspkgs.${pkg-name};
         devShell = hspkgs.shellFor {
           packages = p: [p.${pkg-name}];
