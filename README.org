@@ -6,7 +6,7 @@ Before you initialize your Cabal package, change the name in the =flake.nix= pro
 
 #+begin_src bash
 nix flake init -t github:acowley/nix-templates#haskell-hello
-nix run nixpkgs#gnused 's/"my-package"/"real-package-name"/' -i flake.nix
+nix run nixpkgs#gnused -- 's/"my-package"/"real-package-name"/' -i flake.nix
 nix run .#init
 #+end_src
 
