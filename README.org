@@ -1,4 +1,11 @@
 #+TITLE: Nix Flake Templates
+
+* Flake Hello World
+The most basic nix flake skeleton that I tend to start with. It gets you ready to populate a =devShell= with whatever tools and libraries you need.
+
+#+begin_src bash
+nix flake init -t github:acowley/nix-templates#flake-hello
+#+end_src
 * Haskell
 This [[https://nixos.wiki/wiki/Flakes][flake]] sets up a development environment for working on a Haskell package. It also includes a helper to initialize a [[https://www.haskell.org/cabal/][Cabal]] package using the same [[https://www.haskell.org/ghc/][GHC]] and =cabal-install= you will be using to develop your package.
 
