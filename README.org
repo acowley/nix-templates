@@ -59,3 +59,5 @@ If you build a library package in one flake, and wish to depend upon it in anoth
 #+end_src
 
 Now you can see the package provided by =my-lib=  in the output of =ghc-pkg list=, and depend on the package defined in the =my-lib= flake in your =.cabal= file.
+* Rust
+A Rust development environment provisioned by the [[https://github.com/oxalica/rust-overlay][rust-overlay]]. While =nix= provisions the tooling -- =rustc=, =rustfmt=, =rust-analyzer=, etc. -- =cargo= is used to manage Rust packages in this setup.
