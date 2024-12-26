@@ -10,7 +10,7 @@
   description = "A Haskell package";
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-22.05-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
   };
 
   outputs = { self, nixpkgs, flake-utils }:
@@ -27,14 +27,18 @@
           hspkgs = haskell.override {
             overrides = haskell-overlay;
           };
+          input-script = pkgs.writeShellApplication {
+            name = "cabal-init";
+            runtimeInputs = [hspkgs.ghc hspkgs.cabal-install];
+            text = ''
+              cabal init -p ${pkg-name}
+            '';
+          };
       in {
         packages = pkgs;
-        apps.init = pkgs.writeShellApplication {
-          name = "cabal-init";
-          runtimeInputs = [hspkgs.ghc hspkgs.cabal-install];
-          text = ''
-            cabal init -p ${pkg-name}
-          '';
+        apps.init = {
+          program = "${init-script}/bin/cabal-init";
+          type = "app";
         };
         inherit haskell-overlay;
         defaultPackage = hspkgs.${pkg-name};
